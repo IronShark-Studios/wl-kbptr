@@ -95,6 +95,16 @@ makepkg -si
 
 If you are using NixOS, you can install the [`wl-kbptr` package](https://search.nixos.org/packages?query=wl-kbptr). Nix can also be used to install `wl-kbptr` on other distributions.
 
+If you want to install `wl-kbptr` with `opencv` included. Use the following override instead of the standard package.
+
+```nix
+    (wl-kbptr.overrideAttrs (oldAttrs: {
+      mesonFlags = (oldAttrs.mesonFlags or []) ++ [ "-Dopencv=enabled" ];
+      buildInputs = (oldAttrs.buildInputs or []) ++ [ pkgs.opencv ];
+    }))
+```
+
+`
 ### Chimera Linux
 
 If you are using Chimera Linux, you can install the [`wl-kbptr` package](https://pkgs.chimera-linux.org/package/current/contrib/x86_64/wl-kbptr) which is available in the [contrib repository](https://chimera-linux.org/docs/apk#repositories).
@@ -207,7 +217,7 @@ binde=,g,exec,wlrctl pointer scroll 0 10
 
 # Exit cursor submap
 # If you do not use cursor timeout or cursor:hide_on_key_press, you can delete its respective calls.
-bind=,escape,exec,hyprctl keyword cursor:inactive_timeout 3; hyprctl keyword cursor:hide_on_key_press true; hyprctl dispatch submap reset 
+bind=,escape,exec,hyprctl keyword cursor:inactive_timeout 3; hyprctl keyword cursor:hide_on_key_press true; hyprctl dispatch submap reset
 
 submap = reset
 
